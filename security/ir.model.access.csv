@@ -1,0 +1,8 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+library_management.access_library_book,access_library_book,library_management.model_library_book,base.group_user,1,1,1,1
+library_management.access_library_author,access_library_author,library_management.model_library_author,base.group_user,1,1,1,1
+library_management.access_library_loan,access_library_loan,library_management.model_library_loan,base.group_user,1,1,1,1
+library_management.access_library_tag,access_library_tag,library_management.model_library_tag,base.group_user,1,1,1,1
+library_management.access_library_api_service,access_library_api_service,library_management.model_library_api_service,base.group_user,1,1,1,1
+library_management.access_library_book_import_wizard,access_library_book_import_wizard,library_management.model_library_book_import_wizard,base.group_user,1,1,1,1
+library_management.access_library_book_import_result,access_library_book_import_result,library_management.model_library_book_import_result,base.group_user,1,1,1,1

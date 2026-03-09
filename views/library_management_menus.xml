@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="library_management_menu_root" name="Library"/>
+
+        <menuitem id="library_management_book_menu" name="Books" parent="library_management_menu_root"/>
+        <menuitem id="library_management_author_menu" name="Authors" parent="library_management_menu_root"/>
+        <menuitem id="library_management_loan_menu" name="Loans" parent="library_management_menu_root"/>
+
+        <menuitem id="library_management_book_menu_action" name="All Books" parent="library_management_book_menu" action="book_model_action"/>
+        <menuitem id="library_management_import_menu" name="Import from Open Library" parent="library_management_book_menu" action="action_library_book_import_wizard"/>
+        <menuitem id="library_management_author_menu_action" name="All Authors" parent="library_management_author_menu" action="author_model_action"/>
+        <menuitem id="library_management_loan_menu_action" name="All Loans" parent="library_management_loan_menu" action="loan_model_action"/>
+
+
+</odoo>

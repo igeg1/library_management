@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- VIEW 1: Search form -->
+    <record id="library_book_import_wizard_view_search" model="ir.ui.view">
+        <field name="name">library.book.import.wizard.search</field>
+        <field name="model">library.book.import.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Search Books from Open Library">
+                <group>
+                    <field name="search_type"/>
+                    <field name="title_query"
+                        invisible="search_type == 'author'"
+                        placeholder="e.g. The Hobbit"/>
+                    <field name="author_query"
+                        invisible="search_type == 'title'"
+                        placeholder="e.g. Tolkien"/>
+                </group>
+                <footer>
+                    <button string="Search" type="object"
+                            name="action_search" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- VIEW 2: Results form -->
+    <record id="library_book_import_wizard_view_results" model="ir.ui.view">
+        <field name="name">library.book.import.wizard.results</field>
+        <field name="model">library.book.import.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Select Books to Import">
+                 <!-- <group string="Results"> --> 
+                    <field name="result_ids" nolabel="1">
+                        <list editable="bottom">
+                            <field name="selected"/>
+                            <field name="title"/>
+                            <field name="display_author"/>
+                            <field name="isbn"/>
+                            <field name="first_publish_year"/>
+                        </list>
+                    </field>
+                <!-- </group> --> 
+                <footer>
+                    <button string="Import Selected" type="object"
+                            name="action_import_selected" class="btn-primary"/>
+                    <button string="Back" type="object"
+                            name="action_back_to_search" class="btn-secondary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Opens the search view -->
+    <record id="action_library_book_import_wizard" model="ir.actions.act_window">
+        <field name="name">Import from Open Library</field>
+        <field name="res_model">library.book.import.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="library_book_import_wizard_view_search"/>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Opens the results view -->
+    <record id="action_library_book_import_wizard_results" model="ir.actions.act_window">
+        <field name="name">Select Books to Import</field>
+        <field name="res_model">library.book.import.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="library_book_import_wizard_view_results"/>
+        <field name="target">new</field>
+    </record>
+
+
+    <record id="book_model_action" model="ir.actions.act_window">
+        <field name="name">Books</field>
+        <field name="res_model">library.book</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="author_model_action" model="ir.actions.act_window">
+        <field name="name">Authors</field>
+        <field name="res_model">library.author</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="loan_model_action" model="ir.actions.act_window">
+        <field name="name">Loans</field>
+        <field name="res_model">library.loan</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="book_model_list_view" model="ir.ui.view">
+        <field name="name">library.book.list</field>
+        <field name="model">library.book</field>
+        <field name="arch" type="xml">
+            <list string="Channel">
+                <header>
+                    <button string="Import from Open Library"
+                            type="action"
+                            name="%(library_management.action_library_book_import_wizard)d"/>
+                </header>
+                <field name="name"/>
+                <field name="author_id"/>
+                <field name="isbn"/>
+                <field name="copies_available"/>
+                <field name="price"/>
+                <field name="genre"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="author_model_list_view" model="ir.ui.view">
+        <field name="name">library.author.list</field>
+        <field name="model">library.author</field>
+        <field name="arch" type="xml">
+            <list string="Channel">
+                <field name="name"/>
+                <field name="birthdate"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="loan_model_list_view" model="ir.ui.view">
+        <field name="name">library.loan.list</field>
+        <field name="model">library.loan</field>
+        <field name="arch" type="xml">
+            <list string="Channel">
+                <field name="book_id"/>
+                <field name="borrower_name"/>
+                <field name="borrow_date"/>
+                <field name="return_date"/>
+                <field name="late_return"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="tag_model_list_view" model="ir.ui.view">
+        <field name="name">library.tag.list</field>
+        <field name="model">library.tag</field>
+        <field name="arch" type="xml">
+            <list string="Channel">
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+
+    <record id="library_book_view_form" model="ir.ui.view">
+        <field name="name">library.book.form</field>
+        <field name="model">library.book</field>
+        <field name="arch" type="xml">
+            <form string="name">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" 
+                                type="object" 
+                                name="action_view_loans"
+                                icon="fa-book">
+                            <field string="Loans" name="loan_count" widget="statinfo"/>
+                        </button>
+                    </div>
+
+                    <h1><field name="name"/></h1>
+
+                    <group>
+                        <group>
+                            <field name="author_id"/>
+                            <field name="genre"/>
+                            <field name="description"/>
+                        </group>
+                        <group>
+                            <field name="isbn"/>
+                            <field name="published_year"/>
+                            <field name="price"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Availability">
+                            <group>
+                                <field name="copies_available"/>
+                                <field name="is_available"/>
+                            </group>
+                        </page>
+
+                        <!--
+                        <page string="Loan History">
+                            <group>
+                                <field name="loan_ids" nolabel="1"/>
+                            </group>
+                        </page>
+                        -->
+
+                        <page string="Tags">
+                            <group>
+                                <field name="tag_ids" nolabel="1"/>
+                            </group>
+                        </page>
+                    </notebook>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="library_author_view_form" model="ir.ui.view">
+        <field name="name">library.author.form</field>
+        <field name="model">library.author</field>
+        <field name="arch" type="xml">
+            <form string="name">
+                <sheet>
+                    <h1><field name="name"/></h1>
+
+                    <group>
+                        <field name="birthdate"/>
+                        <field name="biography"/>
+                        <field name="book_ids"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="library_loan_view_form" model="ir.ui.view">
+        <field name="name">library.loan.form</field>
+        <field name="model">library.loan</field>
+        <field name="arch" type="xml">
+            <form string="Loan">
+                <sheet>
+                    <separator string="Basic Information"/>
+                    <group>
+                        <field name="book_id"/>
+                        <field name="borrower_name"/>
+                    </group>
+                    <separator string="Details"/>
+                    <group>
+                        <group>
+                            <field name="borrow_date"/>
+                            <field name="return_date"/>
+                        </group>
+                        <group>
+                            <field name="is_returned"/>
+                            <field name="late_return"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>
